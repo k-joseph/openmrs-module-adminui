@@ -1,7 +1,7 @@
 <%
     ui.decorateWith("appui", "standardEmrPage")
-    ui.includeCss("adminui", "account.css")
 %>
+
 <script type="text/javascript">
     var breadcrumbs = [
         { icon: "icon-home", link: '/' + OPENMRS_CONTEXT_PATH + '/index.htm' },
@@ -13,32 +13,28 @@
 
 <% i=0 %>
 
- <input type="submit" class="button" value="${ui.message("adminui.createPrivilege")}" onclick="javascript:window.location='/${ contextPath }/adminui/account/privilege.page'"/>
+ <input type="submit" class="button" value="${ui.message("adminui.addNewPrivilege")}" onclick="javascript:window.location='/${ contextPath }/adminui/account/privilege.page'"/>
 
 <hr>
-<table id="list-levels" cellspacing="0" cellpadding="2">
+<table id="adminui-privileges" cellspacing="0" cellpadding="2">
 	<thead>
 		<tr>
-			<th>${ ui.message("adminui.sno")}</th>
-			<th>${ ui.message("adminui.privilege.name") }</th>
-			<th>${ ui.message("adminui.privilege.children") }</th>
-			<th></th>
+			<th>${ ui.message("general.name") }</th>
+			<th>${ ui.message("general.description") }</th>
+            <th></th>
 		</tr>
 	</thead>
 	<tbody>
-		<% privilegeLevels.each{  %>
+		<% privileges.each{  %>
 	 	<tr>
 	 		<td>
-				${ ++i }
-			</td>
-			<td>
 				 ${ ui.format(it.name) }
 			</td>
 			<td>
-				${ ui.format(it.childRoles) }
+				${ ui.format(it.description) }
             </td>
 			<td>
-	            <a href="/${ contextPath }/adminui/account/createPrivilege.page?privilegeName=${ it.name }">
+	            <a href="/${ contextPath }/adminui/account/privilege.page?privilegeName=${ it.name }">
 	                <button>${ ui.message("adminui.edit") }</button>
 	            </a>
         	</td>
@@ -49,7 +45,7 @@
 
 
 <% if ( (privileges != null) && (privileges.size() > 0) ) { %>
-${ ui.includeFragment("uicommons", "widget/dataTable", [ object: "#list-levels",
+${ ui.includeFragment("uicommons", "widget/dataTable", [ object: "#adminui-privileges",
         options: [
                 bFilter: true,
                 bJQueryUI: true,

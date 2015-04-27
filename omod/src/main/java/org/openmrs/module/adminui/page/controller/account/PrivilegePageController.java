@@ -17,10 +17,12 @@ package org.openmrs.module.adminui.page.controller.account;
 import javax.servlet.http.HttpServletRequest;
 
 import org.openmrs.Privilege;
+import org.openmrs.api.APIException;
 import org.openmrs.api.LocationService;
+import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.adminui.AdminUiConstants;
-import org.openmrs.module.adminui.account.AccountService;
+import org.openmrs.ui.framework.UiUtils;
 import org.openmrs.ui.framework.annotation.BindParams;
 import org.openmrs.ui.framework.annotation.SpringBean;
 import org.openmrs.ui.framework.page.PageModel;
@@ -33,11 +35,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class PrivilegePageController {
 	
 	public void get(PageModel model, @RequestParam(value = "privilegeName", required = false) String privilegeName,
-	                @SpringBean("adminAccountService") AccountService accountService) {
+	                @SpringBean("userService") UserService userService, UiUtils ui) {
 		
 		Privilege privilege = new Privilege();
 		if (privilegeName != null) {
-			
+			privilege = userService.getPrivilege(privilegeName);
+			if (privilege == null) {
+				throw new APIException(ui.message("adminui.error.noPrivilegeFound", privilegeName));
+			}
 		}
 		model.addAttribute("privilege", privilege);
 	}
@@ -55,7 +60,7 @@ public class PrivilegePageController {
 					request.getSession().setAttribute(AdminUiConstants.SESSION_ATTRIBUTE_INFO_MESSAGE,
 					    "adminui.privilege.saved");
 				}
-				return "redirect:/adminui/account/managePrivileges.page";
+				return "redirect:/adminui/account/viewPrivileges.page";
 			}
 			catch (Exception e) {
 				request.getSession().setAttribute(AdminUiConstants.SESSION_ATTRIBUTE_ERROR_MESSAGE, "adminui.save.fail");
