@@ -2,7 +2,7 @@
 <h2 ng-show="encounterType.uuid">${ui.message('adminui.editEncounterType.title')}</h2>
 
 <fieldset class="right" ng-show="encounterType.uuid">
-    <legend>${ui.message('general.auditInfo')}</legend>
+    <legend>${ui.message('adminui.auditInfo')}</legend>
     <p>
         ${ui.message('general.uuid')}: {{ encounterType.uuid }}
     </p>
@@ -28,7 +28,7 @@
     </p>
     <p>
         <label>${ui.message('general.description')}</label>
-        <input ng-model="encounterType.description" required/>
+        <textarea ng-model="encounterType.description" required></textarea>
     </p>
 
     <p>
